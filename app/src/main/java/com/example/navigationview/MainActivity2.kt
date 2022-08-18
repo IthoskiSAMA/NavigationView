@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.example.navigationview.Usuario.Companion.JsonObjectsBuild
 import com.google.android.material.navigation.NavigationView
 import org.json.JSONArray
@@ -47,6 +48,41 @@ class MainActivity2 : AppCompatActivity() {
         for(i in 0 until permisos.length()){
             nav_view.menu.add(permisos.get(i).toString())
             nav_view.menu.getItem(i).setIcon(R.drawable.iconmenu)
+            var item: MenuItem= nav_view.menu.add(permisos.get(i).toString())
+            item.setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener {
+                var fragment: Fragment? = null
+                when (item.title){
+                    "Inicio"->{
+                        fragment = Inicio()
+                    }
+                    "Analisis"->{
+                        fragment = Analisis()
+                    }
+                    "Apertura"->{
+                        fragment = Apertura()
+                    }
+                    "Configuracion"->{
+                        fragment = Configuracion()
+                    }
+                    "Horarios"->{
+                        fragment = Horarios()
+                    }
+                    "Informacion"->{
+                        fragment = Informacion()
+                    }
+                }
+                if(fragment != null){
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame,fragment)
+                        .commit()
+                    item.setChecked(true)
+                    getSupportActionBar()?.setTitle(item.getTitle());
+                }
+                val drawerlayaout: DrawerLayout= findViewById(R.id.drawer_layout)
+                drawerlayaout.closeDrawer(GravityCompat.START)
+                true
+            })
         }
     }
 
